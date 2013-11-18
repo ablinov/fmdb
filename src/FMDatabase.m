@@ -452,6 +452,12 @@
             sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
         }
     }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    else if ([obj respondsToSelector:@selector(databaseString)]) {
+        sqlite3_bind_text(pStmt, idx, [(NSString*)[obj performSelector:@selector(databaseString)] UTF8String], -1, SQLITE_STATIC);
+    }
+#pragma clang diagnostic pop
     else {
         sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
     }
